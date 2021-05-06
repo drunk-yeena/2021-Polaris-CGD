@@ -9,7 +9,6 @@ public class ResultsScreenUIScript : MonoBehaviour
     public InputField nameSubmission;
     public GameObject masterObject;
     public GameObject scoreSystem;
-    private AsyncOperation sceneAsync;
 
     LeaderboardManagementScript leaderboardManagement;
 
@@ -49,45 +48,12 @@ public class ResultsScreenUIScript : MonoBehaviour
 
     public void RetryGame()
     {
-        StartCoroutine(LoadScene(1));
+        SceneManager.LoadScene(1);
     }
 
     public void ExitGame()
     {
-        StartCoroutine(LoadScene(0));
+        SceneManager.LoadScene(0);
     }
 
-    IEnumerator LoadScene(int index)
-    {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
-        scene.allowSceneActivation = false;
-        sceneAsync = scene;
-
-        while (scene.progress < 0.9f)
-        {
-            Debug.Log("Loading Scene " + " [][] Progress: " + scene.progress);
-            yield return null;
-        }
-        OnFinishedLoadingAllScene(index);
-    }
-
-    public void EnableScene(int index)
-    {
-        sceneAsync.allowSceneActivation = true;
-
-        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(index);
-        if (sceneToLoad.IsValid())
-        {
-            Debug.Log("Scene is Valid");
-            SceneManager.MoveGameObjectToScene(masterObject, sceneToLoad);
-            SceneManager.SetActiveScene(sceneToLoad);
-        }
-    }
-
-    private void OnFinishedLoadingAllScene(int index)
-    {
-        Debug.Log("Completed Scene Loading");
-        EnableScene(index);
-        Debug.Log("Scene Activated");
-    }
 }

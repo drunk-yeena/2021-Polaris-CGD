@@ -31,11 +31,11 @@ public class EnemyScript : MonoBehaviour
     {
         Destroy(this.gameObject);
        // PointSystem.GetComponent<Points_Script>().addPoints(1000);
-        if(this.gameObject.name=="Wolf_Entity")
+        if(this.gameObject.name.Contains("Wolf_Entity"))
         {
             PointSystem.GetComponent<Points_Script>().addPoints(500);
         }
-        if (this.gameObject.name == "Bear_Entity")
+        if (this.gameObject.name.Contains("Bear_Entity"))
         {
             PointSystem.GetComponent<Points_Script>().addPoints(1000);
         }

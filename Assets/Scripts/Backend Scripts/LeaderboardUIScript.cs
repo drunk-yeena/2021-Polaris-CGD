@@ -10,17 +10,13 @@ public class LeaderboardUIScript : MonoBehaviour
     public int maxLeaderboardEntries = 5;
     public Transform highscoreHolderTransform;
     public GameObject leaderboardEntryObject;
-    public GameObject masterObject;
-
-    LeaderboardManagementScript leaderboardManagement;
 
     private void Start()
     {
-        leaderboardManagement = masterObject.GetComponent<LeaderboardManagementScript>();
-        UpdateUI();
+        //UpdateUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI(List<PlayerScore> scores)
     {
         
         int count = 0;
@@ -30,18 +26,25 @@ public class LeaderboardUIScript : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (PlayerScore score in leaderboardManagement.scores)
+        if (scores != null)
+        { 
+            foreach (PlayerScore score in scores)
+            {
+                if (count == maxLeaderboardEntries)
+                {
+                    break;
+                }
+                else
+                {
+                    count++;
+                    Instantiate(leaderboardEntryObject, highscoreHolderTransform).GetComponent<LeaderboardUIEntryScript>().Initalise(score, count);
+
+                }
+            }
+        }
+        else
         {
-            if(count == maxLeaderboardEntries)
-            {
-                break;
-            }
-            else
-            {
-                count++;
-                Instantiate(leaderboardEntryObject, highscoreHolderTransform).GetComponent<LeaderboardUIEntryScript>().Initalise(score,count);
-                
-            }
+            Debug.Log("List is currently Null");
         }
     }
 }

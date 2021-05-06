@@ -12,8 +12,7 @@ public class MainMenuScript : MonoBehaviour
     public GameObject mainMenu;
     public GameObject settingsMenu;
     public GameObject highScoreMenu;
-
-    private AsyncOperation sceneAsync;
+    public GameObject masterObject;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +32,7 @@ public class MainMenuScript : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Start Game Called");
-        StartCoroutine(LoadScene(1));
+        SceneManager.LoadScene(1);
     }
 
     public void QuitApplication()
@@ -42,36 +41,4 @@ public class MainMenuScript : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator LoadScene(int index)
-    {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
-        scene.allowSceneActivation = false;
-        sceneAsync = scene;
-
-        while (scene.progress < 0.9f)
-        {
-            Debug.Log("Loading Scene " + " [][] Progress: " + scene.progress);
-            yield return null;
-        }
-        OnFinishedLoadingAllScene();
-    }
-
-    public void EnableScene(int index)
-    {
-        sceneAsync.allowSceneActivation = true;
-
-        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(index);
-        if (sceneToLoad.IsValid())
-        {
-            Debug.Log("Scene is Valid");
-            SceneManager.SetActiveScene(sceneToLoad);          
-        }
-    }
-
-    private void OnFinishedLoadingAllScene()
-    {
-        Debug.Log("Completed Scene Loading");
-        EnableScene(1);
-        Debug.Log("Scene Activated");
-    }
 }
